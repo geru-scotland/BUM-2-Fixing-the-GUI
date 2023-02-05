@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import eus.ehu.domain.ConcreteFlight;
+import javafx.scene.control.Toggle;
 
 /**
  * FlightBooker Interface
@@ -18,13 +19,13 @@ public interface FlightBooker {
 	 * Provides an ArrayList of concrete flights that match the data introduced
 	 * by a requesting actor
 	 *
-	 * @param departureCity		The city from which the concrete flight must take off
-	 * @param arrivalCity		The city in which the concrete flight must land
-	 * @param date				The date of the concrete flight
-	 * @return					A List of concrete flights that meet the restrictions
+	 * @param departureCity  The city from which the concrete flight must take off
+	 * @param arrivalCity    The city in which the concrete flight must land
+	 * @param date           The date of the concrete flight
+	 * @return A List of concrete flights that meet the restrictions
 	 */
 	public List<ConcreteFlight> getMatchingConFlights(String departureCity,
-													  String arrivalCity, Date date);
+													  String arrivalCity, int tickets, String selectedFare, Date date);
 
 
 	/**
@@ -35,6 +36,6 @@ public interface FlightBooker {
 	 * @return				The number of remaining free seats for this fare after
 	 * 						the booking, or -1 if no available seat to book
 	 */
-	public int bookSeat(ConcreteFlight conFli, String fare);
+	public int bookSeat(ConcreteFlight conFli, String fare, int seats);
 
 }

@@ -7,6 +7,8 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="507.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.presentation.FlightBookingController">
@@ -32,5 +34,12 @@
       <Label fx:id="searchResultAnswer" layoutX="112.0" layoutY="261.0" prefHeight="17.0" prefWidth="344.0" text="  " />
       <ListView fx:id="conFlightList" layoutX="110.0" layoutY="289.0" prefHeight="168.0" prefWidth="365.0" />
       <Button fx:id="bookSelectedConFlightButton" layoutX="110.0" layoutY="467.0" mnemonicParsing="false" onAction="#selectConFlight" prefHeight="26.0" prefWidth="365.0" text=" " />
+      <Label layoutX="463.0" layoutY="183.0" text="Tickets" />
+      <TextField fx:id="ticketNum" layoutX="514.0" layoutY="179.0" prefHeight="26.0" prefWidth="93.0" text="1" />
+      <ImageView fx:id="noTicketsImage" fitHeight="168.0" fitWidth="150.0" layoutX="209.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../images/plane-fire.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
