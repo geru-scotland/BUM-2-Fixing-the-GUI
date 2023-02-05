@@ -18,10 +18,10 @@ import javafx.event.ActionEvent;
 
 import eus.ehu.business_logic.FlightBooker;
 import eus.ehu.domain.ConcreteFlight;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class FlightBookingController {
-
     @FXML
     private Label output;
 
@@ -30,7 +30,6 @@ public class FlightBookingController {
 
     @FXML
     private ListView<ConcreteFlight> conFlightList;
-    ;
 
     @FXML
     private Button bookSelectedConFlightButton;
@@ -61,6 +60,15 @@ public class FlightBookingController {
 
     @FXML
     private RadioButton businessRB;
+
+    @FXML
+    public ImageView noTicketsImage;
+
+    @FXML
+    public TextField ticketNum;
+
+    @FXML
+    public ToggleGroup fareRB;
 
     private FlightBooker businessLogic;
     private ConcreteFlight selectedConFlight;
@@ -119,9 +127,10 @@ public class FlightBookingController {
 
         try {
             Date chosenDate = format.parse(chosenDateString);
+            int tickets = Integer.parseInt(ticketNum.getText());
             List<ConcreteFlight> foundConFlights = businessLogic.
                     getMatchingConFlights(departureInput.getText(),
-                            arrivalInput.getText(), chosenDate);
+                            arrivalInput.getText(), tickets, fareRB.getSelectedToggle().toString(), chosenDate);
             for (ConcreteFlight v : foundConFlights)
                 conFlightInfo.add(v);
             if (foundConFlights.isEmpty())
@@ -145,13 +154,19 @@ public class FlightBookingController {
     @FXML
     void selectConFlight(ActionEvent event) {
         int remaining = 0;
-        if (firstRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "First");
-        } else if (businessRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "Business");
-        } else if (economyRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "Economy");
+
+        try{
+            if (firstRB.isSelected()) {
+                remaining = businessLogic.bookSeat(selectedConFlight, "First", Integer.parseInt(ticketNum.getText()));
+            } else if (businessRB.isSelected()) {
+                remaining = businessLogic.bookSeat(selectedConFlight, "Business", Integer.parseInt(ticketNum.getText()));
+            } else if (economyRB.isSelected()) {
+                remaining = businessLogic.bookSeat(selectedConFlight, "Economy", Integer.parseInt(ticketNum.getText()));
+            }
+        } catch(NumberFormatException e){
+            System.out.println("[EXCPECTION] " + e.getMessage());
         }
+
         if (remaining < 0)
             bookSelectedConFlightButton.setText("Error: This flight had no "
                     + "ticket for the requested fare!");

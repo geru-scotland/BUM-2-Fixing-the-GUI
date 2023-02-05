@@ -2,6 +2,7 @@ package eus.ehu.business_logic;
 
 import eus.ehu.domain.ConcreteFlight;
 import eus.ehu.domain.Flight;
+import javafx.scene.control.Toggle;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,24 +71,28 @@ public class AeroplofFlightBooker implements FlightBooker {
 	 * 'getConFlights' method provides a List of concrete flights matching
 	 * some user's requirements
 	 *
-	 * @param intendedDepartureCity    introduced by user
-	 * @param intendedArrivalCity      introduced by user
-	 * @param intendedDate             introduced/selected by user
-	 * @return                         List of concrete flights
+	 * @param intendedDepartureCity introduced by user
+	 * @param intendedArrivalCity   introduced by user
+	 * @param selectedFare
+	 * @param intendedDate          introduced/selected by user
+	 * @return List of concrete flights
 	 */
 	public List<ConcreteFlight> getMatchingConFlights(String intendedDepartureCity,
-			String intendedArrivalCity, Date intendedDate) {
-
+													  String intendedArrivalCity, int tickets, String selectedFare, Date intendedDate) {
 		List<ConcreteFlight> matchingConFlights = new ArrayList<ConcreteFlight>();
 
 		for (Flight fli : availableFlights) {
 			if (fli.getArrivalCity().equals(intendedArrivalCity) &&
-					fli.getDepartureCity().equals(intendedDepartureCity))
-				matchingConFlights.addAll(fli.getConcreteFlights(intendedDate));
+					fli.getDepartureCity().equals(intendedDepartureCity)){
+				for(ConcreteFlight conFli : fli.getConcreteFlights(intendedDate)){
+					if(selectedFare.contains("Business") && conFli.getFreeBusinessSeatNo() >= tickets
+					|| selectedFare.contains("First") && conFli.getFreeFirstSeatNo() >= tickets
+					|| selectedFare.contains("Economy") && conFli.getFreeEconomySeatNo() >= tickets)
+						matchingConFlights.addAll(fli.getConcreteFlights(intendedDate));
+				}
+			}
 		}
-
 		return matchingConFlights;
-
 	}
 
 	/**
@@ -96,8 +101,8 @@ public class AeroplofFlightBooker implements FlightBooker {
 	 * @return				The number of remaining free seats for this fare after
 	 * 						the booking, or -1 if no available seat to book
 	 */
-	public int bookSeat(ConcreteFlight conFli, String fare) {
-		return conFli.allocateSeat(fare, 1);
+	public int bookSeat(ConcreteFlight conFli, String fare, int seats) {
+		return conFli.allocateSeat(fare, seats);
 	}
 
 }
