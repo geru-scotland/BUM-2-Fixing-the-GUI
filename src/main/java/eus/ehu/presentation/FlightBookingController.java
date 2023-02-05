@@ -133,12 +133,16 @@ public class FlightBookingController {
                             arrivalInput.getText(), tickets, fareRB.getSelectedToggle().toString(), chosenDate);
             for (ConcreteFlight v : foundConFlights)
                 conFlightInfo.add(v);
-            if (foundConFlights.isEmpty())
+            if (foundConFlights.isEmpty()){
+                noTicketsImage.setVisible(true);
                 searchResultAnswer.setText("No matching flights found. " +
                         "Please change your options");
-            else
+            }
+            else{
+                noTicketsImage.setVisible(false);
                 searchResultAnswer.setText("Choose an available flight" +
                         " in the following list:");
+            }
         } catch (ParseException pe) {
             searchResultAnswer.setText("The chosen date " + chosenDateString +
                     " is not valid. Please correct it");
